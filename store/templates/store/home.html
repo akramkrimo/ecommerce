@@ -1,0 +1,44 @@
+{% extends 'navbar.html' %}
+{% block content %}
+
+  <div class="m-1 grid md:grid-cols-4 gap-10 p-3">
+    {% if not products %}
+    <div class="flex justify-center col-span-4">
+      <span class="text-xl font-normal">Sorry, we couldn't find what you're looking for :(</span>
+    </div>
+    {% else %}
+    {% for p in products %}
+      <div class="mb-1 rounded overflow-hidden shadow-xl relative ">
+          <img src="{{p.thumbnail.url}}" alt="..." class="w-full h-32 sm:h-48 object-contain">
+        <div class="ml-1">
+          <a href="{% url 'store:product-details' p.pk %}">
+            <span>{{p.short_name}}</span>
+          </a>
+          <span class="block">{{p.short_description}}</span>
+          <span class="font-medium">${{p.price}}</span>
+          <div class="flex justify-center p-4">
+            <form action="{% url 'store:add-remove-from-cart' p.id %}" method="post">
+              {% csrf_token %}
+            {% if p in cart.products.all %}
+              <input type="hidden" name="redirect_url" value="{{request.path}}">
+              <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                remove
+              </button> 
+            {% else %}
+              <input type="hidden" name="redirect_url" value="{{request.path}}">
+              <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                Add to cart
+              </button>  
+            {% endif %}
+            </form>
+          </div>
+        </div>
+        <div class="font-bold bg-red-600 rounded-full text-white absolute top-0 p-1 ml-2 mt-2">
+          <span> -15% </span>
+        </div>
+      </div>
+    {% endfor %}
+    {% endif %}
+  </div>  
+
+{% endblock %}

@@ -1,0 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    input {
+      @apply border border-opacity-80 border-black rounded;
+    }
+  }

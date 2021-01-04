@@ -1,0 +1,196 @@
+{% load static %}
+{% include 'navbar.html' %}
+
+{% block content %}
+
+{% if not order.shipping_address %}
+
+<div class="flex justify-center mt-5">
+    <div class="w-min mx-auto">
+
+        <div class="w-max flex justify-center ">
+            <h1 class="text-3xl">Please, Enter your shipping address</h1>
+        </div>
+        <div class="border-b border-black pb-3">
+          <form action="" method="post" class="mt-4 w-min">
+            {% csrf_token %}
+            <div>
+              {% for field in form %}
+                <div class="flex justify-between my-1">
+                  {{field.errors}}
+                  {{field.label_tag}}
+                  <div class="ml-4 flex justify-evenly">{{field}}</div>
+                </div>
+              {% endfor %}
+            </div>
+            <button class="btn btn-primary" type="submit">Proceed to checkout</button>
+        </form>
+        </div>
+
+        <!-- Existing shipping address -->
+        {% if request.user.addresses.all %}
+        <div class="w-max flex justify-center mt-2">
+          <h1 class="text-3xl">Or, use an existing one</h1>
+        </div>
+        <div class="mt-4">
+          <form action="{% url 'store:shipping-address' %}" method="post">
+            {% csrf_token %}
+            {% for a in request.user.addresses.all %}
+                <input class="form-check-input" type="radio" name="existing_address" id="id_{{a.id}}" value="{{a.id}}" checked>
+                <label class="form-check-label" for="id_{{a.id}}"> {{a.address}} </label>
+                <br>
+            {% endfor %}
+            <br>
+            <button class="btn btn-success" type="submit">choose address</button>
+        </form>
+      </div>
+        {% endif %}
+    </div>
+</div>
+
+{% elif order.status == 'Processing' %}
+
+    {% block stripe %}
+        <!-- Stripe  -->
+        <link rel="stylesheet" href="{% static 'store/global.css' %}" />
+        <script src="https://js.stripe.com/v3/"></script>
+        <script src="{% static 'store/client.js' %}" defer></script>
+    {% endblock %}
+
+<div class="flex justify-between">
+
+  <!-- Charge existing card  -->
+          <div class="">
+            <div class="text-3xl m-3">
+              <p>Use an existing card</p>
+            </div>
+            {% for c in request.user.cards.all %}
+            <div class="card my-3 w-max ml-3">
+              <div class="card-body">
+                <div class="">
+                  <h5 class="card-title">
+                    {% for i in 'twelve chars' %}
+                    <i class="fas fa-circle"></i>
+                      {% if forloop.counter|divisibleby:"4" %}
+                        &#160;
+                      {% endif %}
+                    {% endfor %}
+                    {{c.last_4}}
+                  </h5>
+                </div>
+                <p class="card-title text-3xl"><i class="fab fa-cc-{{c.brand}}"></i></p>
+                <form action="{% url 'payments:charge-existing-card' c.id %}" method="post">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-success">Pay</button>
+                </form>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+
+  <div class="text-xl my-auto">
+    <h1>Or</h1>
+  </div>
+
+        <!-- Add a new card -->
+  <div>
+    <div class="text-3xl m-3">
+      <p>Add a new card</p>
+    </div>
+    <div>
+      <form id="payment-form">
+          <input type="hidden" id="redirect-url" value="{% url 'payments:payment-success'%}">
+          <div id="card-element"><!--Stripe.js injects the Card Element--></div>
+          <button id="submit">
+            <div class="spinner hidden" id="spinner"></div>
+            <span id="button-text">Pay</span>
+          </button>
+          <p id="card-error" role="alert"></p>
+          <p class="result-message hidden">
+            Payment succeeded, see the result in your
+            <a href="" target="_blank">Stripe dashboard.</a> Refresh the page to pay again.
+          </p>
+      </form>
+    </div>
+  </div>
+
+</div>
+
+<!-- Order review -->
+<div class="flex flex-col">
+  <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <div class="py-2 align-middle flex justify-center w-max sm:px-6 lg:px-8">
+     
+      <!-- Table  -->
+      <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+
+        <div class="text-xl font-medium ml-8">
+          <p>Order review:</p>
+        </div>
+
+        <table class="w-min divide-y divide-gray-200">
+
+          <tbody class="bg-white divide-y divide-gray-200">
+            {% for p in order.cart.products.all %}
+            <tr>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="flex items-center">
+                  <div class="flex-shrink-0 h-10 w-10">
+                    <img class="h-12 w-12 rounded-full" src="{{p.thumbnail.url}}" alt="">
+                  </div>
+                  <div class="ml-4">
+                    <div class="text-sm font-medium text-gray-900">
+                      <a href="{% url 'store:product-details' p.pk %}">{{p.name}}</a>
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="flex items-center">
+                  ${{p.price}}
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+            <tr>
+              <td></td>
+              <td>
+                <div class="felx items-center mt-2 font-medium w-max mr-3">
+                    subtotal: ${{order.subtotal}}
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>
+                <div class="felx items-center mt-2 font-medium text-base">
+                    total: ${{order.get_total}}
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- End of table  -->
+
+      <!-- Shipping Address -->
+      <div class="ml-24">
+        <div class="text-xl font-medium">Shipping Address:</div>
+        <div>
+          {{order.shipping_address}}
+        </div>
+      </div>
+      <!-- End of Shipping Address -->
+    </div>
+  </div>
+</div>
+
+{% else %}
+<div class="flex justify-center">
+  <div class="w-max">
+    <p class="font-bold text-2xl">Thank you for your order</p>
+  </div>
+</div>
+{% endif%}
+
+{% endblock %}

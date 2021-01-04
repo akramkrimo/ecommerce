@@ -1,0 +1,161 @@
+{% extends 'navbar.html' %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-4">
+      <div class="list-group" id="list-tab" role="tablist">
+        <a class="list-group-item list-group-item-action active" id="personal-info-list" data-toggle="list" href="#personal-info" role="tab" aria-controls="home">Personal info</a>
+        <a class="list-group-item list-group-item-action" id="email-list" data-toggle="list" href="#email" role="tab" aria-controls="profile">Email</a>
+        <a class="list-group-item list-group-item-action" id="orders-list" data-toggle="list" href="#orders" role="tab" aria-controls="messages">Orders</a>
+        <a class="list-group-item list-group-item-action" id="addresses-list" data-toggle="list" href="#addresses" role="tab" aria-controls="settings">Addresses</a>
+        <a class="list-group-item list-group-item-action" id="cards-list" data-toggle="list" href="#cards" role="tab" aria-controls="settings">payment cards</a>
+      </div>
+    </div>
+    <div class="col-8">
+          <div class="tab-content" id="nav-tabContent">
+          <div class="tab-pane fade show active" id="personal-info" role="tabpanel" aria-labelledby="personal-info-list">
+            <form action="{% url 'accounts:settings' %}" method="post">
+              {% csrf_token %}
+              {{form.first_name.label_tag}}
+              {{form.first_name}}
+              {{form.last_name.label_tag}}
+              {{form.last_name}}
+              <button class="btn btn-primary"> update personal info </button>
+            </form>
+          </div>
+
+      <!-- Change Email -->
+        <div class="tab-pane fade" id="email" role="tabpanel" aria-labelledby="email-list">
+          <form action="{% url 'accounts:change-email' %}" method="post">
+            {% csrf_token %}
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email" value="{{request.user.email}}" disabled>
+            <button class="btn btn-primary"> change email </button>
+          </form>          
+        </div>
+
+        <!-- Orders -->
+        <div class="tab-pane fade" id="orders" role="tabpanel" aria-labelledby="orders-list">
+          <table class="table table-hover my-3">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Order ID</th>
+                <th scope="col">Order Total</th>
+                <th scope="col">Order Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for order in request.user.orders.all %}
+              <tr>
+                <th scope="row">{{forloop.counter}}</th>
+                <td> <a href="{{order.get_order_link}}" class="btn-link"> {{order.order_id}} </a> </td>
+                <td>{{order.get_total}}</td>
+                <td>{{order.created}}</td>
+              {% endfor %}
+          </table>
+        </div>
+
+        <div class="tab-pane fade" id="addresses" role="tabpanel" aria-labelledby="addresses-list">
+          
+
+            <table class="table table-hover my-3 table-borderless">
+              <thead class="thead-light">
+                <tr>
+                  <th scope="col" >#</th>
+                  <th scope="col" >Address Line</th>
+                </tr>
+                  {% for a in request.user.addresses.all %}
+                  <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{a.address}} - {{a.city}}/{{a.province}} - {{a.country}} </td>
+                    <td>
+                      <form action="{% url 'accounts:delete-address' a.id %}" method="post">
+                        {% csrf_token %}
+                        <button class="btn btn-outline-danger" type="submit"> <i class="far fa-times-circle" size='5'></i> </button>
+                        <input type="hidden" name="redirect_path" value="{{ request.path }}">
+                      </form>
+                    </td>
+                  </tr>
+                  {% endfor  %}
+              </thead>
+            </table>
+            <hr>
+
+            <!-- Button trigger modal  - adding a new address button -->
+            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#exampleModalCenter">
+              Add new shipping address
+            </button>
+
+            <!-- Modal - adding a new address form -->
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Enter new address information</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="border-b border-black pb-3">
+                      <form action="" method="post" class="mt-4 w-min">
+                        {% csrf_token %}
+                        <div>
+                          {% for field in shipping_address_form %}
+                            <div class="flex justify-between my-1">
+                              {{field.errors}}
+                              {{field.label_tag}}
+                              <div class="ml-4 flex justify-evenly">{{field}}</div>
+                            </div>
+                          {% endfor %}
+                        </div>
+                     
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                          <button type="submit" class="btn btn-primary">Add address</button>
+                        </div>
+                     
+                      </form>
+                   </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- End Modal -->
+
+        </div>
+        <div class="tab-pane fade" id="cards" role="tabpanel" aria-labelledby="cards-list">
+          
+          <!-- Card choices -->
+          <div class="row">
+            <div class="col-sm-6">
+              {% for c in request.user.cards.all %}
+              <div class="card my-3">
+                <div class="card-body">
+                  <h5 class="card-title">
+                    {% for i in 'twelve chars' %}
+                    <i class="fas fa-circle"></i>
+                      {% if forloop.counter|divisibleby:"4" %}
+                        &#160;
+                      {% endif %}
+                    {% endfor %}
+                    {{c.last_4}}
+                  </h5>
+                  <h5 class="card-title"><i class="fab fa-cc-{{c.brand}}"></i></h5>
+                  <form action="{% url 'payments:delete-card' c.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                  </form>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+
+{% endblock %}

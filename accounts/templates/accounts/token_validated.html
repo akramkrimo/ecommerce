@@ -1,0 +1,24 @@
+{% extends 'navbar.html' %}
+
+{% block content %}
+
+{% if error%}
+    <div class="col">
+        <h1 class="col mx-autot">{{error}}</h1>
+    </div>
+{% else %}
+
+<div class="col col-center">
+    <h1>Your email has been confirmed</h1>
+    <h3> please enter a new email for your account</h3>
+    <form action="{% url 'accounts:new-email-token' %}" method="post">
+        {% csrf_token %}
+        <label for="email">Enter new email:</label>
+        <input type="email" name="email" id="email">
+        <button class="btn btn-primary" type="submit">send confirmation link</button>
+    </form>
+</div>
+
+{% endif %}
+
+{% endblock %}

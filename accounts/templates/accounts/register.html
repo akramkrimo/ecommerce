@@ -1,0 +1,20 @@
+{% include 'navbar.html' %}
+
+{% block content %}
+<div class="col-8 mx-auto my-5 border border-primary px-5 py-5 ">
+    <form action="" method="post" class="mt-4 w-min">
+        {% csrf_token %}
+        <div class="w-max">
+          {% for field in form %}
+            <div class="flex justify-between my-1">
+              {{field.errors}}
+              {{field.label_tag}}
+              <div class="ml-4 flex justify-evenly">{{field}}</div>
+            </div>
+          {% endfor %}
+        </div>
+            <button type="submit" class="btn btn-primary">Add address</button>
+        </form>
+    <a href="{% url 'accounts:login' %}" class="btn btn-link">already have an account?</a>
+</div>
+{% endblock %}

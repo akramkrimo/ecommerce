@@ -1,0 +1,49 @@
+{% extends 'navbar.html' %}
+
+{% block content %}
+<div class="flex">
+    <section>
+        <div>
+            <img src="{{object.thumbnail.url}}" alt="" class="h-96 w-96 object-contain">
+        </div>
+        <div class="w-96 h-16 flex justify-evenly mt-2">
+            <img src="{{object.thumbnail.url}}" alt="..." class="w-16 object-contain border border-black">
+        {% for image in object.images.all %}
+                <img src="{{image.image.url}}" alt="..." class="w-16 object-contain border border-black">
+        {% endfor %}
+        </div>
+    </section>
+    <main class="ml-5">
+        <div>
+            <span class="text-lg font-medium">{{object.name}}</span>
+        </div>
+        <div class="mt-4">
+            <span class="font-bold text-2xl">${{object.price}}</span>
+        </div>
+        <div class="mt-3">
+            <span class="block">Shipping cost:</span>
+            <span class="mt-2 ml-1">${{object.shipping_cost}}</span>
+        </div>
+        <div class="mt-3 w-96">
+            <span>{{object.description}}</span>
+        </div>
+        <div class=" mt-5">
+            <form action="{% url 'store:add-remove-from-cart' object.id %}" method="post">
+                {% csrf_token %}
+              {% if object in cart.products.all %}
+                <a href="{% url 'store:shipping-address' %}" type="submit" class="font-medium text-base text-white p-3  bg-green-500 rounded-full hover:bg-green-600 hover:no-underline">
+                  Item Already in cart, checkout?
+                </a> 
+              {% else %}
+                <input type="hidden" name="redirect_url" value="{{request.path}}">
+                <button type="submit" class="uppercase font-medium text-white text-lg p-3 bg-green-500 rounded-full hover:bg-green-600 hover:no-underline">
+                  add to cart
+                </button>  
+              {% endif %}
+              </form>
+            <!-- <a href="#">add to cart</a> -->
+        </div>
+    </main>
+</div>
+
+{% endblock %}

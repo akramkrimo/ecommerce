@@ -1,0 +1,30 @@
+{% extends 'navbar.html' %}
+
+{% block content %}
+<div class="container-fluide">
+  <div class="row col-12">
+      <div class="col-12 mb-4 mx-auto" >
+          <h3 class="col-3 mt-3 mx-auto">
+            Products ordered:
+          </h3>
+      </div>
+    {% for p in order.cart.products.all %}
+      <div class="col-3 ">
+            <div class="card" style="width: 14rem;">
+              <img src="{{p.thumbnail.url}}" class="card-img-top mx-auto" alt="..." style="width: 100%;height: 12em;">
+              <div class="card-body">
+                <h5 class="card-title">{{p.name}}</h5>
+                <p class="card-text">{{p.short_description}}</p>
+                <h6 class="card-title">${{p.price}}</h6>
+              </div>
+            </div>
+      </div>
+    {% endfor %}
+    </div>
+    <hr>
+    <div class="row col">
+      <h5 class="col mx-auto">order total: {{order.get_total}}</h5>
+    </div>
+</div>
+
+{% endblock %}
