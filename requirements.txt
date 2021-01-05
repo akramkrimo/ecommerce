@@ -9,7 +9,6 @@ elasticsearch==7.10.1
 elasticsearch-dsl==7.3.0
 idna==2.10
 Pillow==7.2.0
-pkg-resources==0.0.0
 psycopg2-binary==2.8.5
 python-dateutil==2.8.1
 pytz==2020.1
