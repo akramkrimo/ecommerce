@@ -1,0 +1,68 @@
+[
+{
+    "model": "store.product",
+    "pk": 1,
+    "fields": {
+        "name": "Navy Blue Nike Hoodie",
+        "description": "some short description",
+        "price": 99.99,
+        "shipping_cost": 10.99,
+        "thumbnail": "nike_YfFtLaB.jpeg"
+    }
+},
+{
+    "model": "store.product",
+    "pk": 2,
+    "fields": {
+        "name": "Adidas black 3 stripes hat",
+        "description": "this is some dumb description, basically there's no need for it, it's just biting me",
+        "price": 55.73,
+        "shipping_cost": 10.99,
+        "thumbnail": "hat.jpeg"
+    }
+},
+{
+    "model": "store.product",
+    "pk": 3,
+    "fields": {
+        "name": "Adidas black T-shirt",
+        "description": "adidas dead simple trefoil T-shirt, again, what's the point of this description, you just wanna make long  but you have 0 ideas, dumbass",
+        "price": 45.55,
+        "shipping_cost": 10.89,
+        "thumbnail": "adidas.jpg"
+    }
+},
+{
+    "model": "store.product",
+    "pk": 4,
+    "fields": {
+        "name": "Hugo Boss black button-up shirt",
+        "description": "Hugo Boss black button-up shirt for those who get it, it's like we're selling it on the 'street'",
+        "price": 75.5,
+        "shipping_cost": 23.99,
+        "thumbnail": "hugo_boss.jpg"
+    }
+},
+{
+    "model": "store.product",
+    "pk": 5,
+    "fields": {
+        "name": "Redmi note 8 4GB/64GB 48MP Camera 13MP Fron Camera",
+        "description": "This is the phone I'll probably end up buying because it has a great camera, great RAM, great storage capacity, and A GREAT LOOK !!!",
+        "price": 158.55,
+        "shipping_cost": 20.0,
+        "thumbnail": "redmi.jpeg"
+    }
+},
+{
+    "model": "store.product",
+    "pk": 7,
+    "fields": {
+        "name": "M6 Diamond vape",
+        "description": "this the vape of your dream, you vape and you'll go straight into another world, the one where you wanna be right now ... wake up bitch there's no such thing, get this shit, fuck your lungs, and die young !",
+        "price": 43.22,
+        "shipping_cost": 10.0,
+        "thumbnail": "vape_iw2HE7w.jpg"
+    }
+}
+]
