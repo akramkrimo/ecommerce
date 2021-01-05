@@ -49,7 +49,7 @@ class ProductDetails(DetailView):
             cart = Cart.objects.get(id=cart_id)
         else:
             cart = Cart.objects.create()
-            request.session['cart_id'] = cart.pk
+            self.request.session['cart_id'] = cart.pk
     
         context['cart'] = cart
         return context
