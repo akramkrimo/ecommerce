@@ -16,3 +16,4 @@ static/
 
 # local development settings
 ecommerce/settings/local.py
+ecommerce/settings/base.py
