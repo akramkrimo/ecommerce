@@ -46,14 +46,21 @@ def logout_view(request):
     logout(request)
     return redirect('accounts:login')
 
+
 def settings_view(request):
     form = UserChangeForm(instance=request.user)
     shipping_address_form = ShippingAddressForm()
     if request.method == 'POST':
         form = UserChangeForm(request.POST, instance=request.user)
+        print(form)
         if form.is_valid():
-            form.save()
+            user = form.save(commit=False)
+            user.first_name = form.cleaned_data['first_name']
+            user.last_name = form.cleaned_data['last_name']
+            user.save()
             return redirect('accounts:settings')
+        else:
+            return HttpResponse('inalid form')
     context = {
         'form': form,
         'shipping_address_form': shipping_address_form
