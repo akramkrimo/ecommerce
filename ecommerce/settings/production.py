@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'payments',
     'tailwind',
     'theme',
-    # 'django_elasticsearch_dsl',
+    'django_elasticsearch_dsl',
 ]
 
 AUTH_USER_MODEL = 'accounts.User'
@@ -166,12 +166,12 @@ MANAGERS = [('Akram', 'd.akram13@gmail.com')]
 
 TAILWIND_APP_NAME = 'theme'
 
-# Elasticsearch
-# ELASTICSEARCH_DSL={
-#     'default': {
-#         'hosts': 'localhost:9200'
-#     },
-# }
+Elasticsearch
+ELASTICSEARCH_DSL={
+    'default': {
+        'hosts': 'localhost:9200'
+    },
+}
 
 # HTTPS Settings
 CORS_REPLACE_HTTPS_REFERER = True
