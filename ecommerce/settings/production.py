@@ -155,6 +155,9 @@ EMAIL_HOST_PASSWORD = 'Peegs.0906'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
+SERVER_EMAIL = 'd.akram13@gmail.com'
+DEFAULT_FROM_EMAIL = 'd.akram13@gmail.com'
+
 # TailwindCSS
 
 TAILWIND_APP_NAME = 'theme'
