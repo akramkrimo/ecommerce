@@ -154,6 +154,7 @@ EMAIL_HOST_USER = 'd.akram13@gmail.com'
 EMAIL_HOST_PASSWORD = 'Peegs.0906'
 EMAIL_PORT = 465
 EMAIL_USE_SSL = True
+EMAIL_USE_TLS = False
 
 SERVER_EMAIL = 'd.akram13@gmail.com'
 DEFAULT_FROM_EMAIL = 'd.akram13@gmail.com'
