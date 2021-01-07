@@ -158,8 +158,7 @@ EMAIL_USE_TLS = False
 
 SERVER_EMAIL = 'd.akram13@gmail.com'
 
-ADMINS = [('Akram', 'd.akram13@gmail.com')]
-MANAGERS = [('Akram', 'd.akram13@gmail.com')]
+ADMINS = [('Akram', 'd.krimou16@gmail.com')]
 
 # TailwindCSS
 
