@@ -152,8 +152,8 @@ STRIPE_SECRET = 'sk_test_zp8bHwDTWZPxvzvCRq34wgR400nugt3nRk'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'd.akram13@gmail.com'
 EMAIL_HOST_PASSWORD = 'Peegs.0906'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True
 
 SERVER_EMAIL = 'd.akram13@gmail.com'
 DEFAULT_FROM_EMAIL = 'd.akram13@gmail.com'
