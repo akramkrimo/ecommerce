@@ -157,7 +157,6 @@ EMAIL_USE_SSL = True
 EMAIL_USE_TLS = False
 
 SERVER_EMAIL = 'd.akram13@gmail.com'
-DEFAULT_FROM_EMAIL = 'd.akram13@gmail.com'
 
 ADMINS = [('Akram', 'd.akram13@gmail.com')]
 MANAGERS = [('Akram', 'd.akram13@gmail.com')]
