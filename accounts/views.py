@@ -15,6 +15,8 @@ from store.models import Order, ShippingAddress
 from store.forms import ShippingAddressForm
 # Create your views here.
 
+# the reason i named it like that is because login is the name of the function
+# used to log the user in
 def sign_in(request):
     if request.user.is_authenticated:
         return redirect('/')
@@ -29,7 +31,10 @@ def sign_in(request):
         if user:
             login(request, user)
             return redirect(redirect_url)
-        return HttpResponse('wrong credentials')
+        form.add_error(
+            field = 'email',
+            error = 'error: please make sure that you provided the right credentials'
+        )
     return render(request, 'accounts/login.html', {'form': form})
 
 
