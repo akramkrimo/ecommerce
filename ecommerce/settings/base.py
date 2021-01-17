@@ -37,12 +37,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # my apps
     'accounts',
     'store',
     'payments',
-    'tailwind',
     'theme',
+    
+    # third parties
+    'tailwind',
     'django_elasticsearch_dsl',
+    'storages',
 ]
 
 AUTH_USER_MODEL = 'accounts.User'
