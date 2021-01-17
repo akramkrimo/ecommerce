@@ -146,6 +146,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 MEDIA_URL = '/media/'
 
+from ecommerce.aws.conf import *
+
+
 # country flags
 COUNTRIES_FLAG_URL = 'https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/flags/1x1/{code}.svg'
 
