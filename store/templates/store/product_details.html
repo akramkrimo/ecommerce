@@ -28,7 +28,7 @@
             <span>{{object.description}}</span>
         </div>
         <div class=" mt-5">
-            <form action="{% url 'store:add-remove-from-cart' object.id %}" method="post">
+            <form action="{% url 'store:add-remove-from-cart'%}" method="post">
                 {% csrf_token %}
               {% if object in cart.products.all %}
                 <a href="{% url 'store:shipping-address' %}" type="submit" class="font-medium text-base text-white p-3  bg-green-500 rounded-full hover:bg-green-600 hover:no-underline">
@@ -36,6 +36,7 @@
                 </a> 
               {% else %}
                 <input type="hidden" name="redirect_url" value="{{request.path}}">
+                <input type="hidden" name="product_id" value="{{object.id}}">
                 <button type="submit" class="uppercase font-medium text-white text-lg p-3 bg-green-500 rounded-full hover:bg-green-600 hover:no-underline">
                   add to cart
                 </button>  

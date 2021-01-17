@@ -18,9 +18,11 @@
         </div>
 
         <div>
-            <form action="{% url 'store:add-remove-from-cart' product.id %}" method="post">
+            <form action="{% url 'store:add-remove-from-cart'%}" method="post">
                 {% csrf_token %}
-                  <button class="btn btn-outline-danger" type="submit"><i class="far fa fa-trash" aria-hidden="true"></i></button>
+                <input type="hidden" name="product_id" value="{{product.id}}">
+                <input type="hidden" name="redirect_url" value="{{request.path}}">
+                <button class="btn btn-outline-danger" type="submit"><i class="far fa fa-trash" aria-hidden="true"></i></button>
               </form>
         </div>
     </div>

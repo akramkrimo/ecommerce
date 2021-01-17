@@ -38,6 +38,11 @@ class Cart(models.Model):
     products = models.ManyToManyField(Product, 'cart')
     order = models.OneToOneField('Order', null=True, on_delete=models.SET_NULL)
 
+    def __str__(self):
+        if self.order:
+            return 'Cart - Order: ' + self.order.order_id
+        return 'Cart' + str(self.id)
+
     def cart_total(self):
         total = 0
         products = self.products.all()
@@ -45,10 +50,6 @@ class Cart(models.Model):
             total += p.price
         return round(total,2)
 
-    def __str__(self):
-        if self.order:
-            return 'Cart - Order: ' + self.order.order_id
-        return 'Cart' + str(self.id)
 
 class ShippingAddress(models.Model):
     address = models.CharField(max_length=300)
@@ -101,15 +102,16 @@ class Order(models.Model):
                 order_subtotal += p.price
         except:
             pass
-        return round(order_subtotal, 2)
+        return order_subtotal
 
     def get_total(self):
         total = 0
-        if self.cart:
+        try:
             for p in self.cart.products.all():
                 total += p.price + p.shipping_cost
             return round(total, 2)
-        return round(total, 2)
+        except:
+            return total
 
     def get_order_link(self):
         link = reverse('accounts:order-details', kwargs={'order_id':self.order_id})

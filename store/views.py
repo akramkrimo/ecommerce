@@ -1,9 +1,10 @@
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
-from django.views.generic import DetailView
+from django.http import JsonResponse, HttpResponseNotFound
 from django.shortcuts import render, redirect
 from django.urls import reverse
+from django.views.decorators.http import require_GET, require_POST
+from django.views.generic import DetailView
 
 from .documents import ProductDocument
 from .forms import ShippingAddressForm
@@ -15,7 +16,7 @@ import stripe
 
 stripe.api_key = settings.STRIPE_SECRET
 
-
+@require_GET
 def main_page(request):
     q = request.GET.get('q')
     if q:
@@ -54,12 +55,12 @@ class ProductDetails(DetailView):
         context['cart'] = cart
         return context
 
-
-def add_remove_from_cart(request, product_id):
-    # get the cart id from the session storage if it exists
-
+@require_POST
+def add_remove_from_cart(request):
+    # get the url to redirect to, whether it's homepage or product detail
     redirect_url = request.POST.get('redirect_url')
 
+    # get the cart id from the session storage if it exists
     cart_id = request.session.get('cart_id')
 
     if cart_id:
@@ -70,8 +71,12 @@ def add_remove_from_cart(request, product_id):
         request.session['cart_id'] = cart.id
     
     # get the product using the id provided in the url
-    product = Product.objects.get(id=product_id)
-
+    try:
+        product_id = request.POST.get('product_id')
+        product = Product.objects.get(id=product_id)
+    except:
+        return HttpResponseNotFound('link is broken')
+        
     # add or remove product
     if product in cart.products.all():
         cart.products.remove(product)
@@ -94,13 +99,9 @@ def cart_view(request):
 # you can add the id of an existing shipping address as an argument and use the same view
 # without the nedd to create another view for existing shipping addresses,
 # give that argument the value of None
-def shipping_address_info(request):
 
-    if not request.user.is_authenticated:
-        return redirect('{}?next={}'.format(
-            reverse('accounts:login'),
-            request.path
-        ))
+@login_required(login_url='/accounts/login/?next=/shipping-address/')
+def shipping_address_info(request):
     
     form = ShippingAddressForm(request.POST or None)
     cart_id = request.session['cart_id']
@@ -137,6 +138,5 @@ def shipping_address_info(request):
         'form': form,
         'order': order
     }
-    return render(request, 'payments/checkout.html', {'form':form})
-
+    return render(request, 'payments/checkout.html', context)
 
