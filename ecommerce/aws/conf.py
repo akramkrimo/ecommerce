@@ -1,7 +1,8 @@
 import datetime
+import os
 
-AWS_ACCESS_KEY_ID = 'AKIAZ2XJP7WYHZU62V6L'
-AWS_SECRET_ACCESS_KEY = '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'
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
 AWS_USER = 'new_user'
 AWS_GROUP = 'My_New_Group'
 

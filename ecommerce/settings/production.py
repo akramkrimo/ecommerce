@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'lhxwe49#0_bc#=hmjlntc0k2ztyqy!@kn$r63pa8xr4hl8jb7!'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -153,18 +153,17 @@ from ecommerce.aws.conf import *
 COUNTRIES_FLAG_URL = 'https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/flags/1x1/{code}.svg'
 
 # Stripe
-STRIPE_KEY = 'pk_test_JinbFFBhTY69fTlMNSuIZFh700CUPWUvyT'
-STRIPE_SECRET = 'sk_test_zp8bHwDTWZPxvzvCRq34wgR400nugt3nRk'
+STRIPE_KEY = os.environ.get('STRIPE_KEY')
+STRIPE_SECRET = os.environ.get('STRIPE_SECRET')
 
 # Email settings
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'd.akram13@gmail.com'
-EMAIL_HOST_PASSWORD = 'Peegs.0906'
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = 465
 EMAIL_USE_SSL = True
 EMAIL_USE_TLS = False
 
-SERVER_EMAIL = 'd.akram13@gmail.com'
 
 ADMINS = [('Akram', 'd.krimou16@gmail.com')]
 
