@@ -2,6 +2,8 @@ from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium.webdriver.chrome.webdriver import WebDriver
 
 class MySeleniumTests(StaticLiveServerTestCase):
+    
+    # using fixutures, we can get data from project's DB and use it with (temporary) test DB
     fixtures = ['users.json', 'store.json']
 
     @classmethod
